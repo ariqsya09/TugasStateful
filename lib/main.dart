@@ -10,30 +10,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  AudioPlayer audioPlayer = AudioPlayer();
-  String durasi = "00:00:00";
-
-  _MyAppState() {
-    audioPlayer = AudioPlayer();
-    audioPlayer.onAudioPositionChanged.listen((duration) {
-      setState(() {
-        durasi = duration.toString();
-      });
-    });
-    audioPlayer.setReleaseMode(ReleaseMode.LOOP);
-  }
-  void playSound(String url) async {
-    await audioPlayer.play(url);
-  }
-
-  void stopSound() async {
-    await audioPlayer.stop();
-  }
-
-  void resumeSound() async {
-    await audioPlayer.resume();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,10 +46,7 @@ class _MyAppState extends State<MyApp> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: TextButton(
-                    onPressed: () {
-                      playSound(
-                          "http://codeskulptor-demos.commondatastorage.googleapis.com/pang/paza-moduless.mp3");
-                    },
+                    onPressed: () {},
                     child: Text(
                       '''Hidup ibu dan anak ini serba kekurangan. Meski begitu, sang ibu selalu berusaha keras untuk memberikan kehidupan yang layak untuk anak laki-lakinya.
 
@@ -106,33 +79,26 @@ Ibu Malin berusaha menolong tapi terlambat karena anaknya sudah berubah menjadi 
                 ),
               ),
               Text(
-                durasi,
+                "00:00:00",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    onPressed: () {
-                      playSound(
-                          "http://codeskulptor-demos.commondatastorage.googleapis.com/pang/paza-moduless.mp3");
-                    },
+                    onPressed: () {},
                     icon: Icon(
                       Icons.play_circle_filled_rounded,
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      stopSound();
-                    },
+                    onPressed: () {},
                     icon: Icon(
                       Icons.stop_circle_rounded,
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      resumeSound();
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.fast_forward_rounded),
                   ),
                 ],
@@ -141,21 +107,6 @@ Ibu Malin berusaha menolong tapi terlambat karena anaknya sudah berubah menjadi 
           )),
         ),
       ),
-      // bottomNavigationBar:
-      //     BottomNavigationBar(items: const <BottomNavigationBarItem>[
-      //   BottomNavigationBarItem(
-      //     icon: Icon(Icons.play_circle_fill_rounded),
-      //     label: 'Play',
-      //   ),
-      //   BottomNavigationBarItem(
-      //     icon: Icon(Icons.stop_circle_rounded),
-      //     label: 'Stop',
-      //   ),
-      //   BottomNavigationBarItem(
-      //     icon: Icon(Icons.fast_forward_rounded),
-      //     label: 'Fast Forward',
-      //   ),
-      // ]),
     ));
   }
 }
