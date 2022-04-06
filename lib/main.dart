@@ -1,66 +1,81 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(myApp());
+import 'package:audioplayers/audioplayers.dart';
 
-class myApp extends StatefulWidget {
-  const myApp({Key? key}) : super(key: key);
+void main() => runApp(MyApp());
 
+class MyApp extends StatefulWidget {
   @override
-  _myAppState createState() => _myAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<myApp> {
-  void start() {}
-  void speed() {}
-  void stop() {}
+class _MyAppState extends State<MyApp> {
+  AudioPlayer audioPlayer = AudioPlayer();
+  String durasi = "00:00:00";
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+  _MyAppState() {
+    audioPlayer = AudioPlayer();
+    audioPlayer.onAudioPositionChanged.listen((duration) {
+      setState(() {
+        durasi = duration.toString();
+      });
+    });
+    audioPlayer.setReleaseMode(ReleaseMode.LOOP);
   }
-}
+  void playSound(String url) async {
+    await audioPlayer.play(url);
+  }
 
-class _myAppState extends State<myApp> {
+  void stopSound() async {
+    await audioPlayer.stop();
+  }
+
+  void resumeSound() async {
+    await audioPlayer.resume();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.lightBlueAccent,
-              title: Center(
+      appBar: AppBar(
+        backgroundColor: Colors.lightBlueAccent,
+        title: Center(
+          child: Text(
+            'Cerita Rakyat',
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    'https://images.unsplash.com/photo-1611572789411-6240f6cea970?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'),
+                fit: BoxFit.fill)),
+        child: SingleChildScrollView(
+          child: Container(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                ),
                 child: Text(
-                  'Cerita Rakyat',
+                  'MALIN KUNDANG',
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
-            ),
-            body: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          'https://images.unsplash.com/photo-1611572789411-6240f6cea970?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'),
-                      fit: BoxFit.fill)),
-              child: SingleChildScrollView(
-                child: Container(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                      ),
-                      child: Text(
-                        'MALIN KUNDANG',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            '''Hidup ibu dan anak ini serba kekurangan. Meski begitu, sang ibu selalu berusaha keras untuk memberikan kehidupan yang layak untuk anak laki-lakinya.
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextButton(
+                    onPressed: () {
+                      playSound(
+                          "http://codeskulptor-demos.commondatastorage.googleapis.com/pang/paza-moduless.mp3");
+                    },
+                    child: Text(
+                      '''Hidup ibu dan anak ini serba kekurangan. Meski begitu, sang ibu selalu berusaha keras untuk memberikan kehidupan yang layak untuk anak laki-lakinya.
 
 Ketika Malin beranjak dewasa, dia pergi merantai bersama seorang saudagar kaya. Ia pun berjanji akan pulang dan menjemput ibunya setelah kaya raya.
 
@@ -85,35 +100,62 @@ Malin Kundang tak peduli dan tetap tak ingin mengakui ibunya. Sang ibu lalu mera
 "Ibu, tolong ampuni aku. Tolong selamatkan aku," teriak Malin.
 
 Ibu Malin berusaha menolong tapi terlambat karena anaknya sudah berubah menjadi batu. Dari cerita ini, anak bisa mendapatkan pesan moral untuk menepati janji, serta tidak durhaka kepada orang tua.''',
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ),
-                        ),
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.play_circle_filled_rounded,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.stop_circle_rounded,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.fast_forward_rounded),
-                        ),
-                      ],
-                    )
-                  ],
-                )),
+                  ),
+                ),
               ),
-            )));
+              Text(
+                durasi,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      playSound(
+                          "http://codeskulptor-demos.commondatastorage.googleapis.com/pang/paza-moduless.mp3");
+                    },
+                    icon: Icon(
+                      Icons.play_circle_filled_rounded,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      stopSound();
+                    },
+                    icon: Icon(
+                      Icons.stop_circle_rounded,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      resumeSound();
+                    },
+                    icon: Icon(Icons.fast_forward_rounded),
+                  ),
+                ],
+              ),
+            ],
+          )),
+        ),
+      ),
+      // bottomNavigationBar:
+      //     BottomNavigationBar(items: const <BottomNavigationBarItem>[
+      //   BottomNavigationBarItem(
+      //     icon: Icon(Icons.play_circle_fill_rounded),
+      //     label: 'Play',
+      //   ),
+      //   BottomNavigationBarItem(
+      //     icon: Icon(Icons.stop_circle_rounded),
+      //     label: 'Stop',
+      //   ),
+      //   BottomNavigationBarItem(
+      //     icon: Icon(Icons.fast_forward_rounded),
+      //     label: 'Fast Forward',
+      //   ),
+      // ]),
+    ));
   }
 }
