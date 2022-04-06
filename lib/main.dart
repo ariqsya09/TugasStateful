@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.lightBlueAccent,
         title: Center(
           child: Text(
-            'Cerita Rakyat',
+            'Cerita Rakyat Indonesia',
           ),
         ),
       ),
